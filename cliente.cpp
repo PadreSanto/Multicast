@@ -30,18 +30,15 @@ int main(int argc, char const *argv[])
         printf("Error al recibir paquete\n");
         exit(1);
     }
-
     char dirFuente[16];
     sprintf(dirFuente, "%s", pd.obtieneDireccion());
 
-    printf("\nSe recibió un paquete en el grupo.\n");
-    printf("\tOrigen: %s:%d\n", dirFuente, pd.obtienePuerto());
-    printf("\tContenido: %s.\n", pd.obtieneDatos());
-
-
-
+    printf("\nSe recibió un paquete.\n");
+    printf("Mensaje: %s",pd.obtieneDatos());
+    printf("\nDireccion: %s\n", dirFuente);
+    printf("Puerto: %d\n", pd.obtienePuerto());
+    
     socket.salirseGrupo(direccionMulticast);
-
 
     // Se abre socket.
     SocketDatagrama socketUnicast(7000);

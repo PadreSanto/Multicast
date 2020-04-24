@@ -3,9 +3,9 @@
 
 int main(int argc, char const *argv[])
 {   
-    if (argc != 5)
+    if (argc != 4)
     {
-        printf("Uso: ./%s [DIRECCIÓN MULTICAST] [PUERTO PARA ENVIAR] [TTL] [CADENA A ENVIAR]\n",
+        printf("Uso: ./%s [DIRECCIÓN MULTICAST] [PUERTO PARA ENVIAR] [CADENA A ENVIAR]\n",
                argv[0]);
         exit(EXIT_FAILURE);
     }
@@ -17,11 +17,11 @@ int main(int argc, char const *argv[])
 
     int puertoTransmision = atoi(argv[2]);
 
-    unsigned char ttl = (unsigned char)atoi(argv[3]);
+    unsigned char ttl = (unsigned char)1;
 
-    int longitudCadena = strlen(argv[4]);
+    int longitudCadena = strlen(argv[3]);
     char *cadenaParaEnviar = new char[longitudCadena];
-    sprintf(cadenaParaEnviar, "%s", argv[4]);
+    sprintf(cadenaParaEnviar, "%s", argv[3]);
 
     // Se abre socket.
     SocketMulticast socket(puertoTransmision);
@@ -35,7 +35,7 @@ int main(int argc, char const *argv[])
         printf("Error al enviar paquete\n");
         exit(1);
     }
-    printf("Se emitió un paquete de datagrama al grupo indicado.\n");
+    printf("El mensaje ha sido enviado un correctamente al grupo.\n");
 
 
     SocketDatagrama socketUnicast(6000);
@@ -44,7 +44,8 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < 5; ++i)
     {
         socketUnicast.recibe(request);
-        printf("Si recibi respuesta de: %s\n",request.obtieneDireccion());
+        printf("Se recibio respuesta de la direccion: %s\n",request.obtieneDireccion());
+        printf("Respuesta del grupo: ",request.obtieneDatos());
     }
         
 
