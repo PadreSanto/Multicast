@@ -9,14 +9,9 @@ int main(int argc, char const *argv[])
                argv[0]);
         exit(EXIT_FAILURE);
     }
-
-    // Extracción de parámetros.
-
     char direccionMulticast[16];
     sprintf(direccionMulticast, "%s", argv[1]);
-
     int puertoTransmision = atoi(argv[2]);
-
     unsigned char ttl = (unsigned char)1;
 
     int longitudCadena = strlen(argv[3]);
@@ -25,9 +20,6 @@ int main(int argc, char const *argv[])
 
     // Se abre socket.
     SocketMulticast socket(puertoTransmision);
-    //socket.unirAlGrupo(direccionMulticast);
-
-    // Se genera paquete y se envía.
 
     PaqueteDatagrama pd(cadenaParaEnviar, longitudCadena, direccionMulticast, puertoTransmision);
     if (socket.envia(pd, ttl) < 0)
@@ -45,7 +37,7 @@ int main(int argc, char const *argv[])
     {
         socketUnicast.recibe(request);
         printf("Se recibio respuesta de la direccion: %s\n",request.obtieneDireccion());
-        printf("Respuesta del grupo: ",request.obtieneDatos());
+        printf("Respuesta del grupo: %s",request.obtieneDatos());
     }
         
 

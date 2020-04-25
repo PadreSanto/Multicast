@@ -28,24 +28,10 @@ int SocketDatagrama::envia(PaqueteDatagrama &p)
 
 int SocketDatagrama::recibe(PaqueteDatagrama &p)
 {
-    // Recibe datos.
     int longitudForanea = sizeof(direccionForanea);
     int recibidos = recvfrom(s, p.obtieneDatos(), p.obtieneLongitud(), 0, (struct sockaddr *)&direccionForanea, (socklen_t *)&longitudForanea);
-
-    // Guarda direccción fuente.
-    uint32_t direccionFuente = ntohl(direccionForanea.sin_addr.s_addr);
-    char direccionFuenteCadena[16];
-    sprintf(direccionFuenteCadena, "%u.%u.%u.%u",
-            direccionFuente >> 24 & 0xff,
-            direccionFuente >> 16 & 0xff,
-            direccionFuente >> 8 & 0xff,
-            direccionFuente & 0xff);
-    p.inicializaIp(direccionFuenteCadena);
-
-    // Guarda puerto fuente.
-    in_port_t puertoFuente = ntohs(direccionForanea.sin_port);
-    p.inicializaPuerto(puertoFuente);
-
+    p.inicializaIp(inet_ntoa(direccionForanea.sin_addr));
+    p.inicializaPuerto(ntohs(direccionForanea.sin_port));
     return recibidos;
 }
 
@@ -58,20 +44,8 @@ int SocketDatagrama::recibeTimeout(PaqueteDatagrama &p, time_t segundos, susecon
     // Recibe datos.
     int longitudForanea = sizeof(direccionForanea);
     int recibidos = recvfrom(s, p.obtieneDatos(), p.obtieneLongitud(), 0, (struct sockaddr *)&direccionForanea, (socklen_t *)&longitudForanea);
-
-    // Guarda direccción fuente.
-    uint32_t direccionFuente = ntohl(direccionForanea.sin_addr.s_addr);
-    char direccionFuenteCadena[16];
-    sprintf(direccionFuenteCadena, "%u.%u.%u.%u",
-            direccionFuente >> 24 & 0xff,
-            direccionFuente >> 16 & 0xff,
-            direccionFuente >> 8 & 0xff,
-            direccionFuente & 0xff);
-    p.inicializaIp(direccionFuenteCadena);
-
-    // Guarda puerto fuente.
-    in_port_t puertoFuente = ntohs(direccionForanea.sin_port);
-    p.inicializaPuerto(puertoFuente);
+    p.inicializaIp(inet_ntoa(direccionForanea.sin_addr));
+    p.inicializaPuerto(ntohs(direccionForanea.sin_port));
     //--------------
     if (recibidos < 0)
     {

@@ -11,16 +11,11 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
 
-    // Extracción de parámetros.
-
-
-
     char direccionMulticast[16];
     sprintf(direccionMulticast, "%s", argv[1]);
 
     int puertoRecepcion = atoi(argv[2]);
 
-    // Se crea socket y se une a grupo.
     SocketMulticast socket(puertoRecepcion);
     socket.unirseGrupo(direccionMulticast);
 
@@ -49,9 +44,5 @@ int main(int argc, char const *argv[])
 
 
     socketUnicast.envia(pdUnicast);
-    sleep(1);
-
-
-
     return 0;
 }
